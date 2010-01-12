@@ -1,30 +1,28 @@
 # -*- coding: utf-8 -*-
-
 import grok
-import zope.app.intid
-import megrok.resourcelibrary
-from zope.app.intid import IIntIds
+from zope.intid.interfaces import IIntIds
 from zope.interface import Interface
 from zope.component import getUtility
 from zope.app.component.hooks import getSite
 from zope.app.container.interfaces import IContainer
 from zope.traversing.browser.absoluteurl import absoluteURL
-from dolmen.app.layout.master import DolmenTop
-from menhir.library.jquery import JQueryBase
+from hurry.jquery import jquery
+from megrok import resource
+from dolmen.app.layout import Top
 
 
-class JSonNavTree(megrok.resourcelibrary.ResourceLibrary):
+
+class JSonNavTree(resource.ResourceLibrary):
     grok.name("menhir.simple.navtree")
-    megrok.resourcelibrary.depend(JQueryBase)
-    megrok.resourcelibrary.directory('resources')
-    megrok.resourcelibrary.include('jquery.treeview.pack.js')
-    megrok.resourcelibrary.include('jquery.treeview.async.js')
-    megrok.resourcelibrary.include('navtree.css')
+    resource.path('resources')
+    resource.resource('jquery.treeview.pack.js', depends=[jquery])
+    resource.resource('jquery.treeview.async.js', depends=[jquery])
+    resource.resource('navtree.css')
 
 
 class NavTree(grok.Viewlet):
     grok.context(Interface)
-    grok.viewletmanager(DolmenTop)
+    grok.viewletmanager(Top)
 
     def render(self):
         JSonNavTree.need()
