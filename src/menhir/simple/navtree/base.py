@@ -52,9 +52,10 @@ class JSONNavtreeQuery(grok.JSON):
            
             url = absoluteURL(child, self.request)
             expanded = self.current.startswith(url)
+            name = getattr(child, 'title', child.__name__)
             
             entry = {
-                "text": "<a href='%s'>%s</a>" % (url, child.title),
+                "text": "<a href='%s'>%s</a>" % (url, name),
                 "id": self.intid.queryId(child),
                 "expanded": expanded,
                 }
