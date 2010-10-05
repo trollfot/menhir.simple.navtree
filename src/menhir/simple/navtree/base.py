@@ -30,7 +30,7 @@ class NavTree(grok.Viewlet):
         <script type="text/javascript">
         $(document).ready(function(){
 	$(".treeview").treeview({
-		url: "%s/navtreequery",
+		url: "%s/@@navtreequery",
                 })
         });
         </script>
