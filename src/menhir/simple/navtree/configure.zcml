@@ -1,7 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:grok="http://namespaces.zope.org/grok">
 
-    <include package="hurry.jquery" />
     <include package="megrok.resource" />
     <grok:grok package="." />
 </configure>

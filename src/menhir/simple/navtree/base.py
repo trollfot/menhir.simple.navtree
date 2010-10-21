@@ -3,7 +3,7 @@ import grok
 from zope.intid.interfaces import IIntIds
 from zope.interface import Interface
 from zope.component import getUtility
-from zope.app.component.hooks import getSite
+from zope.component.hooks import getSite
 from zope.app.container.interfaces import IContainer
 from zope.traversing.browser.absoluteurl import absoluteURL
 from hurry.jquery import jquery
