@@ -8,8 +8,9 @@ from zope.app.container.interfaces import IContainer
 from zope.traversing.browser.absoluteurl import absoluteURL
 from hurry.jquery import jquery
 from megrok import resource
+from dolmen.app import security
 from dolmen.app.layout import Top
-
+from zope.security.management import checkPermission
 
 
 class JSonNavTree(resource.ResourceLibrary):
@@ -66,6 +67,15 @@ class JSONNavtreeQuery(grok.JSON):
                 entry['hasChildren'] = subentries
             children.append(entry)
         return children
+    
+    def _buildTreeWithRoot(self, node):
+        return [{
+            "text":"<a href='%s'>%s</a>" % (absoluteURL(node, self.request), getattr(node, 'title')),
+            "id":self.intid.queryId(self.context),
+            "expanded":True,
+            "children":self._buildTree(node)
+        }]
+                    
 
     def navtreequery(self):
         self.intid = getUtility(IIntIds)
@@ -77,4 +87,8 @@ class JSONNavtreeQuery(grok.JSON):
             node = self.intid.queryObject(int(root))
             if not node:
                 raise NotImplementedError("Unexisiting node.")
-        return self._buildTree(node)
+        if (root == u"source" or not root) and checkPermission(grok.name.bind().get(security.CanAddContent), self.context):
+            # if we look at the site root, add in a root node which allows us to return to the site root/index easily
+            return self._buildTreeWithRoot(node)
+        else:
+            return self._buildTree(node)
